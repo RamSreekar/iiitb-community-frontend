@@ -1,0 +1,74 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: iiitb-community-frontend
+  labels:
+    app: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+        - name: frontend
+          image: 
+          ports:
+            - containerPort: 3000
+          env:
+            - name: REACT_APP_FIREBASE_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: iiitb-frontend-secret
+                  key: REACT_APP_FIREBASE_API_KEY
+            - name: REACT_APP_FIREBASE_AUTH_DOMAIN
+              valueFrom:
+                secretKeyRef:
+                  name: iiitb-frontend-secret
+                  key: REACT_APP_FIREBASE_AUTH_DOMAIN
+            - name: REACT_APP_FIREBASE_PROJECT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: iiitb-frontend-secret
+                  key: REACT_APP_FIREBASE_PROJECT_ID
+            - name: REACT_APP_FIREBASE_STORAGE_BUCKET
+              valueFrom:
+                secretKeyRef:
+                  name: iiitb-frontend-secret
+                  key: REACT_APP_FIREBASE_STORAGE_BUCKET
+            - name: REACT_APP_FIREBASE_MESSAGING_SENDER_ID
+              valueFrom:
+                secretKeyRef:
+                  name: iiitb-frontend-secret
+                  key: REACT_APP_FIREBASE_MESSAGING_SENDER_ID
+            - name: REACT_APP_FIREBASE_APP_ID
+              valueFrom:
+                secretKeyRef:
+                  name: iiitb-frontend-secret
+                  key: REACT_APP_FIREBASE_APP_ID
+            - name: REACT_APP_FIREBASE_MEASUREMENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: iiitb-frontend-secret
+                  key: REACT_APP_FIREBASE_MEASUREMENT_ID
+
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: iiitb-community
+spec:
+  type: NodePort
+  selector:
+    app: frontend
+  ports:
+    - protocol: TCP
+      port: 
+      targetPort: 3000
+      nodePort: 
