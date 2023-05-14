@@ -2,12 +2,18 @@
 - name: Deploy front app to minikube
   hosts: all
   tasks:
+    - name: delete ingress
+      shell: kubectl get deployment iiitb-community-ingress >/dev/null 2>&1 && kubectl delete ingress iiitb-community-ingress || echo "ingress not found, skipping delete"
+
     - name: delete previous backend deployment
       shell: kubectl get deployment iiitb-frontend-deployment >/dev/null 2>&1 && kubectl delete deployment iiitb-frontend-deployment || echo "deployment not found, skipping delete"
 
     - name: delete previous secret
       shell: kubectl get secret iiitb-frontend-secret >/dev/null 2>&1 && kubectl delete secret iiitb-frontend-secret || echo "secret not found, skipping delete"
-    
+
+    - name: apply ingress
+      shell: kubectl apply -f ../ingress.yml
+
     - name: apply secret
       shell: kubectl apply -f ../secret.yml
 
