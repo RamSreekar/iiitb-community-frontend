@@ -7,9 +7,9 @@ on:
   workflow_dispatch:
 
   push:
-    branches: [ "main" ]
+    branches: [ "deployment" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "deployment" ]
 env:
   CI: false
 jobs:
