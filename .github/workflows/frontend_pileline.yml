@@ -23,6 +23,8 @@ jobs:
        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
    steps:
+   - name: Checkout code
+
    - uses: actions/checkout@v3
    - name: Use Node.js ${{ matrix.node-version }}
      uses: actions/setup-node@v3
@@ -56,8 +58,7 @@ jobs:
 
    steps:
      - name: Checkout code
-
-     - uses: actions/checkout@v3
+     - uses: actions/checkout@v2
         
      - name: deploy using ansible
        run: ansible-playbook -i ansible/inventory.yml ansible/frontend_playbook.yml
