@@ -1,0 +1,75 @@
+version: "3.9"
+services:
+  
+
+  iiitb-community-backend:
+    image: durgaprasad81/community-backend:latest
+    container_name: iiitb-community-backend
+    # ports:
+    #   - "3001:3001"
+    network_mode: host
+    #  - sociopedia
+    volumes:
+      - /home/dp/Desktop/spe/dockercompose/logs/logs.log:/usr/src/app/api-logs.log
+  iiitb-community-frontend:
+    image: durgaprasad81/community-frontend:latest
+    container_name: iiitb-community-frontend
+    stdin_open: true
+    # ports:
+    #   - "6002:6002"
+    network_mode: host
+     # - sociopedia
+
+  Elasticsearch:
+    image: elasticsearch:7.16.2
+    container_name: elasticsearch
+    restart: always
+    volumes:
+    - elastic_data:/usr/share/elasticsearch/data/
+    environment:
+      ES_JAVA_OPTS: "-Xmx256m -Xms256m"
+      discovery.type: single-node    
+    ports:
+    - '9200:9200'
+    - '9300:9300'
+  #   network_mode: host
+  #  #   - sociopedia
+
+  Logstash:
+    image: logstash:7.16.2
+    container_name: logstash
+    restart: always
+    volumes:
+    - /home/dp/Desktop/spe/dockercompose/logs:/logstash_dir
+    command: logstash -f /logstash_dir/logstash.conf 
+    depends_on:
+      - Elasticsearch
+    ports:
+    - '9600:9600'
+    environment:
+      LS_JAVA_OPTS: "-Xmx256m -Xms256m"    
+    # network_mode: host
+    #  # - sociopedia
+
+  Kibana:
+    image: kibana:7.16.2
+    container_name: kibana
+    restart: always       
+    ports:
+    - '5601:5601'
+    environment:
+      - ELASTICSEARCH_URL=http://localhost:9200  
+    depends_on:
+      - Elasticsearch  
+    # network_mode: host
+    #  # - sociopedia
+
+networks:
+  iiitb:
+    ipam:
+      driver: default
+      config:
+      - subnet: 127.0.0.1/8
+volumes:
+  elastic_data:
+    driver: local  
