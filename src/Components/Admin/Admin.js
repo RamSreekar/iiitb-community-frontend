@@ -1,18 +1,17 @@
 import React, { useRef, useState } from 'react'
 // import {Grid, Paper, TextField, Button, Typography} from "@material-ui/core";
 import { Typography, Grid, Paper, TextField, Button, CircularProgress } from '@mui/material';
-import {Link, useNavigate} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
 // import AdminNavbar from "../Navbar/AdminNavbar"
 // import { AuthProvider, useAuth } from '../../contexts/AuthContext';
-import "./Signup.css"
+import "./Admin.css"
 import Signin from '../Signin/Signin';
 import { makeStyles } from '@mui/styles';
 import signupPic from "../../Images/signup.svg"
-import { api } from "../../api";
-import { Redirect } from 'react-router-dom';
+// import { api } from "../../api";
 
-function Signup({userType}) {
+function Admin({userType}) {
     const nameRef = useRef()
     const emailRef = useRef()
     const passRef = useRef()
@@ -20,8 +19,8 @@ function Signup({userType}) {
     // const { signout, signup, currentUser } = useAuth()
     const [error, setError] = useState('')
     const [success, setSuccess] = useState('')
-    const [loading, setLoading] = useState(false)
-    const history = useNavigate()
+    const [loading, setLoading] = useState(false)    
+    // const history = useHistory()
     
     const useStyles = makeStyles((theme) => ({
         root: {
@@ -30,66 +29,65 @@ function Signup({userType}) {
         },
       }));
     if(!userType){
-        userType=2
+        userType=1
     }
     console.log(userType)
     async function handleSubmit(e){
         e.preventDefault();        
-        setError('')
-        console.log(userType)
-        if(passRef.current.value !== confpassRef.current.value){
-            // console.log("err1")
-            return setError('Passwords do not match!')
-        }
-        try{
-            setError('')
-            setLoading(true)
-            // await signup(emailRef.current.value, passRef.current.value);
-            var myHeaders = new Headers();
-            myHeaders.append("Content-Type", "application/json");
+        // setError('')
+        // console.log(userType)
+        // if(passRef.current.value !== confpassRef.current.value){
+        //     // console.log("err1")
+        //     return setError('Passwords do not match!')
+        // }
+        // try{
+        //     setError('')
+        //     setLoading(true)
+        //     await signup(emailRef.current.value, passRef.current.value);
+        //     var myHeaders = new Headers();
+        //     myHeaders.append("Content-Type", "application/json");
 
-            var raw = JSON.stringify({"name":nameRef.current.value,"email":emailRef.current.value,"pwd":passRef.current.value,"userType": userType});
+        //     var raw = JSON.stringify({"name":nameRef.current.value,"email":emailRef.current.value,"pwd":passRef.current.value,"userType": userType});
 
-            var requestOptions = {
-            method: 'POST',
-            headers: myHeaders,
-            body: raw,
-            redirect: 'follow'
-            };
-            console.log(raw)
-            await fetch(api+"auth/register", requestOptions)
-            .then(response => response.json())
-            .then(result => {
-                if(result.status == 200){
-                    setError('')
-                    setSuccess("Account created Successfully!")
-                    if(userType !== 2){
-                        alert("Account created successfully!")
-                        history("/Signin");
-                    }
-                    else{
-                        alert("Account created successfully!")
-                        window.location.reload();
-                    }
-                }
-                // else if(result.status == 202){
-                //     setError('User already exists');
-                // }
-                // else{
-                //     setError('Failed to create account')
-                // }
-                history("/Signin");
-
-            })
-            .catch(error => {
-                console.log(error);
-                setError('Failed to create account')
-            });
-        }
-        catch{
-            setError('Failed to create account')
-        }
-        setLoading(false)
+        //     var requestOptions = {
+        //     method: 'POST',
+        //     headers: myHeaders,
+        //     body: raw,
+        //     redirect: 'follow'
+        //     };
+        //     console.log(raw)
+        //     await fetch(api+"register", requestOptions)
+        //     .then(response => response.json())
+        //     .then(result => {
+        //         if(result.status == 200){
+        //             setError('')
+        //             setSuccess("Account created Successfully!")
+        //             signout()
+        //             if(userType !== 2){                        
+        //                 alert("Account created successfully!")
+        //                 history.push("/Signin");
+        //             }
+        //             else{
+        //                 alert("Account created successfully!")
+        //                 window.location.reload();
+        //             }
+        //         }
+        //         else if(result.status == 202){
+        //             setError('User already exists');
+        //         }
+        //         else{
+        //             setError('Failed to create account')
+        //         }
+        //     })
+        //     .catch(error => {
+        //         console.log(error);
+        //         setError('Failed to create account')
+        //     });
+        // }
+        // catch{
+        //     setError('Failed to create account')
+        // }
+        // setLoading(false)
     }
 
     const paperStyle = {padding: 1, height: '74vh', width: '300px', margin: 'auto'};
@@ -137,4 +135,4 @@ function Signup({userType}) {
     )
 }
 
-export default Signup
+export default Admin
