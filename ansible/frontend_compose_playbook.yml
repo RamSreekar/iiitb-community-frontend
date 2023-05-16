@@ -1,0 +1,10 @@
+---
+- name: Deploy front app using minikube
+  hosts: all
+  tasks:
+    - name: down
+      shell: docker-compose down
+    - name: system prune
+      shell: docker system prune -af
+    - name: docker-compose up
+      shell: docker-compose -f docker-compose.yml up -d

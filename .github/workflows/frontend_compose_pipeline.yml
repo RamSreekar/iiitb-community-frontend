@@ -79,14 +79,14 @@ jobs:
 
       - name: Push Docker image
         run: docker push durgaprasad81/community-frontend:latest
-#  deploy:
-#    needs: [ build-push-docker-Image ]
-#    runs-on: self-hosted
-#
-#    steps:
-#      - name: Checkout code
-#        uses: actions/checkout@v2
-#
-#      - name: deploy using ansible
-#        run: ansible-playbook -i ansible/inventory.yml ansible/frontend_playbook.yml
+  deploy:
+    needs: [ build-push-docker-Image ]
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: deploy using ansible
+        run: ansible-playbook -i ansible/inventory.yml ansible/frontend_compose_playbook.yml
 
